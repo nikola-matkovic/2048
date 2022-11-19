@@ -9,6 +9,26 @@
     outline: 0;
 }
 
+:root {
+    --two: rgba(255, 200, 200);
+    --four: rgb(238, 100, 100);
+    --eight: rgb(255, 50, 50);
+    --sixteen: rgb(255, 0, 0);
+    --thirty-two: rgb(200, 200, 255);
+    --sixty-four: rgb(100, 100, 255);
+    --one-hundred-twenty-eight: rgb(50, 50, 255);
+    --two-hundred-and-fifty-six: rgb(0, 0, 255);
+    --five-hundred-twelve: rgb(200, 0, 200);
+    --one-thousand-twenty-four: rgb(100, 10, 100);
+    --two-thousand-forty-eight: rgb(31, 0, 31);
+    --four-thousand-ninty-six: rgb(255, 255, 200);
+    --eight-thousand-one-hundred-ninty-two: rgb(255, 255, 100);
+    --excelent-one: rgb(255, 255, 50);
+    --excelent-two: rgb(255, 255, 0);
+    --excelent-three: rgb(255, 255, 50);
+    --excelen-four: rgb(0, 0, 0);
+}
+
 body {
     background-color: rgb(10, 10, 30);
     display: flex;
@@ -28,8 +48,17 @@ body {
     grid-template-rows: repeat(4, 1fr);
     gap: 15px;
     overflow: hidden;
+    position: relative;
 }
 
 #cont > .cell {
     background-color: rgba(161, 132, 64, 0.4);
+}
+
+.number {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(25% - 15px);
+    aspect-ratio: 1;
 }
