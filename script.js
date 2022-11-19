@@ -37,8 +37,16 @@ const createNewElement = () => {
     element.style.backgroundColor = backgroundColor;
     element.textContent = number;
     cont.appendChild(element);
+    return element;
 }
 
 function start() {
-    
+    score = 0;
+    getHighScore();
+    clear();
+    createNewElement();
+    setElementPosition();
 }
+
+//event listeners:
+addEventListener("load", (event) =>  start()) 
