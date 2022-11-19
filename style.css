@@ -42,24 +42,24 @@ body {
     height: 90vmin;
     border: 3px solid rgb(34, 28, 13);
     border-radius: 10px;
-    background-color: rgba(139, 113, 53, 0.4);
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
-    gap: 15px;
     overflow: hidden;
     position: relative;
 }
 
 #cont > .cell {
     background-color: rgba(161, 132, 64, 0.4);
+    border: 10px solid rgb(10, 10, 30);
 }
 
 .number {
     position: absolute;
     top: 0;
     left: 0;
-    width: calc(25% - 15px);
+    width: calc(25% - 20px);
+    transform: translate(10px, 10px);
     aspect-ratio: 1;
     font-family: roboto, arial, helvetica, sans-serif;
     font-size: 15vh;
@@ -67,4 +67,7 @@ body {
     justify-content: center;
     align-items: center;
     color: rgb(39, 39, 39);
+    transition: all;
+    transition-timing-function: linear;
+    transition-duration: 1s;
 }

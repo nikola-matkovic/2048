@@ -20,11 +20,26 @@ const colors = [
 let avableNumbers = [2, 4];
 let cont = document.getElementById("cont");
 let score = 0;
+let sizeX = 4;
+let sizeY = 4;
+
+let matrix = [];
+for (let i = 0; i < sizeX; i++) {
+    matrix.push([]);
+}
 
 
 const getRandomNumber = (numbers) => {
     let index = Math.floor(Math.random() * numbers.length);
     return numbers[index];
+}
+
+const getHighScore = () => {
+    return 0;
+}
+
+const clear = () => {
+    return 0;
 }
 
 const createNewElement = () => {
@@ -40,13 +55,53 @@ const createNewElement = () => {
     return element;
 }
 
-function start() {
+const setElementPosition = (element) => {
+    let left = Math.floor(Math.random() * 4);
+    let top = Math.floor(Math.random() * 4)
+    element.style.left = `${left * 25}%`;
+    element.style.top = `${top * 25}%`;
+}
+
+const start = () => {
     score = 0;
     getHighScore();
     clear();
-    createNewElement();
-    setElementPosition();
+    let element = createNewElement();
+    setElementPosition(element);
+}
+
+const detectKey = (event) =>{
+    let key = event.key;
+    switch (key) {
+        case "ArrowUp":
+            moveUp();
+        case "ArrowDown":
+            moveDown();
+        case "ArrowLeft":
+            moveLeft();
+        case "ArrowRight":
+            moveRight();
+    }
+}
+
+const moveUp = () => {
+    return;
+}
+
+const moveDown = () => {
+    return;
+}
+const moveLeft = () => {
+    const elements = document.querySelectorAll(".number");
+    elements.forEach(element => {
+        console.log(element);
+    })
+    return;
+}
+const moveRight = () => {
+    return;
 }
 
 //event listeners:
-addEventListener("load", (event) =>  start()) 
+addEventListener("load", start)
+addEventListener("keyup", (event) => detectKey(event))
