@@ -11,3 +11,5 @@ add settings and maybe sounds
 add score and hightscore
 
 set hightscore in local storage
+
+add check for avable positions  at check game over

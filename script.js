@@ -22,6 +22,7 @@ let cont = document.getElementById("cont");
 let score = 0;
 let sizeX = 4;
 let sizeY = 4;
+let numberOfElements = 0;
 
 let matrix = [];
 
@@ -59,20 +60,24 @@ const createNewElement = () => {
     return element;
 }
 
-
+const busyPosition = (top, left) => {
+    if (matrix[top][left].element != undefined) {
+        return true; 
+    }
+    return false;
+}
 
 const setElementPosition = (element) => {
-    let left, right;
+    let top, left;
     do {
-        left = Math.floor(Math.random() * 4);
         top = Math.floor(Math.random() * 4)
+        left = Math.floor(Math.random() * 4);
     }
-    while (busyPosition(left, right));
+    while (busyPosition(top, left));
     element.style.left = `${left * 25}%`;
     element.style.top = `${top * 25}%`;
     matrix[top][left].number = element.textContent;
     matrix[top][left].element = element;
-    console.log("podešavam da element top  bude" + top + "left bude" + left)
     console.log(matrix)
 }
 
@@ -80,8 +85,32 @@ const start = () => {
     score = 0;
     getHighScore();
     clear();
+    addNew();
+}
+
+const gameOver = () => {
+    console.log("gameOver!");
+}
+
+const checkGameOver = () => {
+    let maxNumberOfElements = sizeX * sizeY;
+    if (numberOfElements === maxNumberOfElements) {
+        return true;
+    }
+    return false;
+}
+
+const addNew = () => {
+    console.log(numberOfElements, "pre")
+    let isOver = checkGameOver();
+    if (isOver){
+        gameOver();
+        return;
+    }
     let element = createNewElement();
     setElementPosition(element);
+    numberOfElements++;
+    console.log(numberOfElements, "posle")
 }
 
 const detectKey = (event) =>{
@@ -99,6 +128,7 @@ const detectKey = (event) =>{
 }
 
 const moveUp = () => {
+    let speed = 0;
     for (let i = 0; i < sizeX; i++){
         for (let j = 0; j < sizeY; j++){
             if (matrix[i][j].element) {
@@ -129,13 +159,16 @@ const moveUp = () => {
                         }
                     }
                     console.log(firstPosition, lastPosition);
-                    let speed = (firstPosition - lastPosition) * 0.25;
+                    speed = (firstPosition - lastPosition) * 0.25;
                     element.style.transitionDuration = `${speed}s`;
                     element.style.top = `${lastPosition * 25}%`;
                 }
             }
         }
     }
+    setTimeout(() => {
+        addNew();
+    }, speed * 1000);
 }
 
 const canGoUp =(y) =>{
