@@ -154,7 +154,6 @@ const moveUp = () => {
                         matrix[currentElement][j].element = undefined;
                         matrix[currentElement][j].number = 0;
                         //podesi za novi krug
-                        console.log("element je premešten na poziciju", upperElement, j)
                         currentElement--;
                         upperElement--;
                         lastPosition = currentElement;
@@ -185,10 +184,10 @@ const canGoUp = (x, y) => {
         }
         return uppFilds.some(fild => fild.element == undefined)
     }
-    const haveSameUp = () => {
+    const haveSameUp = (y) => {
         return false;
     }
-    if (y != 0 && haveFreeUp(y)  || y!=0 &&  haveSameUp(y)) {
+    if (y != 0 && haveFreeUp(y)  || y!=0 &&  haveSameUp(x, y)) {
         return true;
     }
     else {
