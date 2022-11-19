@@ -66,6 +66,7 @@ const setElementPosition = (element) => {
     element.style.top = `${top * 25}%`;
     matrix[top][left].number = element.textContent;
     matrix[top][left].element = element;
+    console.log("podešavam da element top  bude" + top + "left bude" + left)
     console.log(matrix)
 }
 
@@ -98,17 +99,36 @@ const moveUp = () => {
     for (let i = 0; i < sizeX; i++){
         for (let j = 0; j < sizeY; j++){
             if (matrix[i][j].element) {
-                element = matrix[i][j].element;
-                if (canGoUp(j)) {
-                    matrix[i][j].element = undefined;
-                    let upperElement = j - 1;
-                    while (matrix[i][upperElement].element == undefined) {
-                        matrix[i][upperElement].element = element;
+                let element = matrix[i][j].element;
+                let number = matrix[i][j].number;
+                let firstPosition = i;
+                let lastPosition;
+                if (canGoUp(i)) {
+                    let upperElement = i - 1;
+                    let currentElement = i;
+                    while (matrix[upperElement][j].element == undefined) {
+                        // pomeri na gore
+                        matrix[upperElement][j].element = element;
+                        console.log(matrix[upperElement][j].element);
+                        matrix[upperElement][j].number = number;
+                        //izbriši odozdo
+                        matrix[currentElement][j].element = undefined;
+                        matrix[currentElement][j].number = 0;
+                        //podesi za novi krug
+                        console.log("element je premešten na poziciju", upperElement, j)
+                        currentElement--;
                         upperElement--;
+                        lastPosition = currentElement;
+                        //proveri izlaz
+                        console.log(matrix);
                         if (upperElement == -1) {
                             break;
                         }
                     }
+                    console.log(firstPosition, lastPosition);
+                    let speed = (firstPosition - lastPosition) * 0.25;
+                    element.style.transitionDuration = `${speed}s`;
+                    element.style.top = `${lastPosition * 25}%`;
                 }
             }
         }
