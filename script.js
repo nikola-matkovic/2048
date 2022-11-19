@@ -27,6 +27,11 @@ let matrix = [];
 for (let i = 0; i < sizeX; i++) {
     matrix.push([]);
 }
+for (let i = 0; i < sizeX; i++) {
+    for (let j = 0; j < sizeY; j++) {
+        matrix[i][j] = {number: 0, element: undefined};
+    }
+}
 
 
 const getRandomNumber = (numbers) => {
@@ -46,7 +51,6 @@ const createNewElement = () => {
     let number = getRandomNumber(avableNumbers);
     let colorIndex = Math.log2(number);
     let backgroundColor = colors[colorIndex];
-    console.log(backgroundColor, colorIndex);
     let element = document.createElement("div");
     element.classList.add("number");
     element.style.backgroundColor = backgroundColor;
@@ -60,6 +64,9 @@ const setElementPosition = (element) => {
     let top = Math.floor(Math.random() * 4)
     element.style.left = `${left * 25}%`;
     element.style.top = `${top * 25}%`;
+    matrix[top][left].number = element.textContent;
+    matrix[top][left].element = element;
+    console.log(matrix)
 }
 
 const start = () => {
@@ -85,19 +92,46 @@ const detectKey = (event) =>{
 }
 
 const moveUp = () => {
-    return;
+    //Prođi kroz sve elemente
+    //proveri da li može da ide gore
+    // ako može, pomeri ga za n mesta!
+    for (let i = 0; i < sizeX; i++){
+        for (let j = 0; j < sizeY; j++){
+            if (matrix[i][j].element) {
+                element = matrix[i][j].element;
+                if (canGoUp(j)) {
+                    matrix[i][j].element = undefined;
+                    let upperElement = j - 1;
+                    while (matrix[i][upperElement].element == undefined) {
+                        matrix[i][upperElement].element = element;
+                        upperElement--;
+                        if (upperElement == -1) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+const canGoUp =(y) =>{
+    if (y != 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 const moveDown = () => {
     return;
 }
 const moveLeft = () => {
-    const elements = document.querySelectorAll(".number");
-    elements.forEach(element => {
-        console.log(element);
-    })
     return;
 }
+
+
 const moveRight = () => {
     return;
 }
