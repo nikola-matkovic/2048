@@ -128,54 +128,48 @@ const detectKey = (event) =>{
 
 const moveUp = () => {
     let speed = 0;
-    for (let i = 0; i < sizeX; i++){
-        for (let j = 0; j < sizeY; j++){
+    let forRemove = false;
+    const move = (object, j, i) => {
+        if (!canGoUp(j, i)) {
+            return;
+        }
+        let element = object.element;
+        let number = object.number;
+        let firstPosition = i;
+        let lastPosition;
+        let upperElement = i - 1
+        let currentElement = i;
+        while (matrix[upperElement][j].element == undefined || matrix[upperElement][j].number == number) {
+            matrix[upperElement][j].element = element;
+            matrix[upperElement][j].number = number;
+            matrix[currentElement][j].element = undefined;
+            matrix[currentElement][j].number = 0;
+            upperElement--;
+            currentElement--;
+            lastPosition = currentElement;
+            if(upperElement == -1) break
+        }
+        console.log(firstPosition, lastPosition);
+        speed = (firstPosition - lastPosition) * 0.25;
+        element.style.transitionDuration = `${speed}s`;
+        element.style.top = `${lastPosition * 25}%`;
+    }
+    for (let i = 0; i < sizeX; i++) {
+        for (let j = 0; j < sizeY; j++) {
             if (matrix[i][j].element) {
-                let element = matrix[i][j].element;
-                let number = matrix[i][j].number;
-                let firstPosition = i;
-                let lastPosition;
-                if (canGoUp(j, i)) {
-                    let upperElement = i - 1;
-                    let currentElement = i;
-                    while (matrix[upperElement][j].element == undefined || matrix[upperElement][j].number == number) {
-                        if (matrix[upperElement][j].number == number) {
-                            matrix[upperElement][j].element = element;
-                            matrix[upperElement][j].number = number * 2;
-                            matrix[upperElement][j].element.textContent = number * 2;
-                            numberOfElements--;
-                        }
-                        else {
-                            // pomeri na gore
-                            matrix[upperElement][j].element = element;
-                            matrix[upperElement][j].number = number;
-                        }
-                        //izbriši odozdo
-                        matrix[currentElement][j].element = undefined;
-                        matrix[currentElement][j].number = 0;
-                        //podesi za novi krug
-                        currentElement--;
-                        upperElement--;
-                        lastPosition = currentElement;
-                        //proveri izlaz
-                        console.log(matrix);
-                        if (upperElement == -1) {
-                            break;
-                        }
-                    }
-                    console.log(firstPosition, lastPosition);
-                    speed = (firstPosition - lastPosition) * 0.25;
-                    element.style.transitionDuration = `${speed}s`;
-                    element.style.top = `${lastPosition * 25}%`;
-                }
+                move(matrix[i][j], j, i);
             }
         }
     }
+
     setTimeout(() => {
+        if (forRemove) {
+            forRemove.remove()
+        }
         addNew();
     }, speed * 1000);
-}
 
+}
 const canGoUp = (x, y) => {
     const haveFreeUp = (y) => {
         let uppFilds = [];
@@ -185,6 +179,13 @@ const canGoUp = (x, y) => {
         return uppFilds.some(fild => fild.element == undefined)
     }
     const haveSameUp = (y) => {
+        for (let i = y; i > 0; i--){
+            current = matrix[i][x];
+            prew = matrix[i - 1][x];
+            if (current.number == prew.number) {
+                return true;
+            }
+        }
         return false;
     }
     if (y != 0 && haveFreeUp(y)  || y!=0 &&  haveSameUp(x, y)) {
