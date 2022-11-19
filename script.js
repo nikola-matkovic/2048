@@ -78,7 +78,6 @@ const setElementPosition = (element) => {
     element.style.top = `${top * 25}%`;
     matrix[top][left].number = element.textContent;
     matrix[top][left].element = element;
-    console.log(matrix)
 }
 
 const start = () => {
@@ -136,14 +135,21 @@ const moveUp = () => {
                 let number = matrix[i][j].number;
                 let firstPosition = i;
                 let lastPosition;
-                if (canGoUp(i)) {
+                if (canGoUp(j, i)) {
                     let upperElement = i - 1;
                     let currentElement = i;
-                    while (matrix[upperElement][j].element == undefined) {
-                        // pomeri na gore
-                        matrix[upperElement][j].element = element;
-                        console.log(matrix[upperElement][j].element);
-                        matrix[upperElement][j].number = number;
+                    while (matrix[upperElement][j].element == undefined || matrix[upperElement][j].number == number) {
+                        if (matrix[upperElement][j].number == number) {
+                            matrix[upperElement][j].element = element;
+                            matrix[upperElement][j].number = number * 2;
+                            matrix[upperElement][j].element.textContent = number * 2;
+                            numberOfElements--;
+                        }
+                        else {
+                            // pomeri na gore
+                            matrix[upperElement][j].element = element;
+                            matrix[upperElement][j].number = number;
+                        }
                         //izbriši odozdo
                         matrix[currentElement][j].element = undefined;
                         matrix[currentElement][j].number = 0;
@@ -171,13 +177,24 @@ const moveUp = () => {
     }, speed * 1000);
 }
 
-const canGoUp =(y) =>{
-    if (y != 0) {
+const canGoUp = (x, y) => {
+    const haveFreeUp = (y) => {
+        let uppFilds = [];
+        for (let i = 0; i < y; i++){
+            uppFilds.push(matrix[i][x]);
+        }
+        return uppFilds.some(fild => fild.element == undefined)
+    }
+    const haveSameUp = () => {
+        return false;
+    }
+    if (y != 0 && haveFreeUp(y)  || y!=0 &&  haveSameUp(y)) {
         return true;
     }
     else {
         return false;
     }
+
 }
 
 const moveDown = () => {
