@@ -1,0 +1,9 @@
+style all elements
+
+add random responing for element
+
+add element moving 
+
+add stacking logic
+
+add settings and maybe sounds
