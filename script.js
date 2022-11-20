@@ -17,6 +17,9 @@ const colors = [
     "rgb(255, 255, 50)",
     "rgb(0, 0, 0)",
 ];
+
+const GLOBAL_SPEEED = 250;
+
 let avableNumbers = [2, 4];
 let cont = document.getElementById("cont");
 let score = 0;
@@ -176,7 +179,7 @@ const moveUp = () => {
                 numberOfElements--;
             }
             speed = steps * 0.25;
-            element.style.transitionDuration = `${speed}s`;
+            element.style.transitionDuration = `${speed * GLOBAL_SPEEED}ms`
             element.style.top = `${lastPosition * 25}%`;
             element.style.top = `${lastPosition * 25}%`;
             console.log("I need to go " + steps + " steps")
@@ -194,7 +197,7 @@ const moveUp = () => {
         addNew();
         console.log("after");
         log_matrix();
-    }, speed * 1000);
+    }, speed * GLOBAL_SPEEED);
 }
 
 const moveDown = () => {
@@ -238,7 +241,7 @@ const moveDown = () => {
                 numberOfElements--;
             }
                 speed = steps * 0.25;
-                element.style.transitionDuration = `${speed}s`;
+                element.style.transitionDuration = `${speed * GLOBAL_SPEEED}ms`
                 element.style.top = `${lastPosition * 25}%`;
                 element.style.top = `${lastPosition * 25}%`;
             console.log("I need to go " + steps + " steps")
@@ -257,7 +260,7 @@ const moveDown = () => {
         addNew();
         console.log("after");
         log_matrix();
-    }, speed * 1000);
+    }, speed * GLOBAL_SPEEED);
 }
 
 const moveLeft = () => {
@@ -302,7 +305,7 @@ const moveLeft = () => {
                 numberOfElements--;
             }
             speed = steps * 0.25;
-            element.style.transitionDuration = `${speed}s`
+            element.style.transitionDuration = `${speed * GLOBAL_SPEEED}ms`
             element.style.left = `${lastPosition * 25}%`;
             console.log("I need to go " + steps + " steps")
         }
@@ -319,20 +322,19 @@ const moveLeft = () => {
         addNew();
         console.log("after");
         log_matrix();
-    }, speed * 1000)
+    }, speed * GLOBAL_SPEEED)
 }
 
 const moveRight = () => {
     console.log("before");
     log_matrix();
     let speed;
-    let forDelete = null;
     const move = (i, j) => {
         let steps = 0;
         let sum = false;
         let number = matrix[i][j].number;
         let element = matrix[i][j].element;
-        for (let k = j - 1; k >= 0; k--) {
+        for (let k = j + 1; k < sizeY; k++) {
             if (matrix[i][k].element == undefined) {
                 steps++;
             }
@@ -348,11 +350,11 @@ const moveRight = () => {
         if (steps) {
             let lastPosition;
             for (let k = 1; k <= steps; k++) {
-                matrix[i][j - k].element = element;
-                matrix[i][j - k].number = number;
-                matrix[i][j - k + 1].element = undefined;
-                matrix[i][j - k + 1].number = 0;
-                lastPosition = j - k;
+                matrix[i][j + k].element = element;
+                matrix[i][j + k].number = number;
+                matrix[i][j + k - 1].element = undefined;
+                matrix[i][j + k - 1].number = 0;
+                lastPosition = j + k;
             }
             if (sum) {
                 let element = matrix[i][lastPosition].element;
@@ -364,12 +366,12 @@ const moveRight = () => {
                 numberOfElements--;
             }
             speed = steps * 0.25;
-            element.style.transitionDuration = `${speed}s`
+            element.style.transitionDuration = `${speed * GLOBAL_SPEEED}ms`
             element.style.left = `${lastPosition * 25}%`;
             console.log("I need to go " + steps + " steps")
         }
     }
-    for (let j = 0; j < sizeX; j++){
+    for (let j = sizeX - 2; j >= 0; j--){
         for (let i = 0; i < sizeX; i++){
             if (matrix[i][j].element != undefined) {
                 move(i, j);
@@ -381,8 +383,7 @@ const moveRight = () => {
         addNew();
         console.log("after");
         log_matrix();
-    }, speed * 1000)
-}
+    }, speed * GLOBAL_SPEEED)
 }
 //event listeners:
 addEventListener("load", start)
