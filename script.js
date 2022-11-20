@@ -26,7 +26,13 @@ let numberOfElements = 0;
 
 let matrix = [];
 
-
+const log_matrix = () => {
+    for (let i = 0; i < 4; i++){
+        console.log(`${matrix[i][0].number} ${matrix[i][1].number} ${matrix[i][2].number} ${matrix[i][3].number}`);
+    }
+    let numberOfElements_real = document.querySelectorAll(".number").length
+    console.log(`now i have ${numberOfElements_real} elements, and i have ${numberOfElements} in memory`);
+}
 
 const getRandomNumber = (numbers) => {
     let index = Math.floor(Math.random() * numbers.length);
@@ -128,6 +134,10 @@ const detectKey = (event) =>{
 }
 
 const moveUp = () => {
+        
+    console.log("before");
+    log_matrix();
+
     let speed;
     let forDelete = null;
     const move = (i, j) => {
@@ -142,7 +152,7 @@ const moveUp = () => {
             if (matrix[k][j].number == number) {
                 steps++;
                 sum = true;
-                forDelete = matrix[k][j].element;
+                matrix[k][j].element.remove();
             }
             if (matrix[k][j].element != undefined && matrix[k][j].number != number) {
                 break;
@@ -187,6 +197,8 @@ const moveUp = () => {
         if (forDelete) {
             forDelete.remove();
         }
+        console.log("after");
+        log_matrix();
     }, speed * 1000);
 }
 
@@ -195,6 +207,10 @@ const moveDown = () => {
 }
 
 const moveLeft = () => {
+    console.log("before");
+    log_matrix();
+
+
     let speed;
     let forDelete = null;
     const move = (i, j) => {
@@ -209,7 +225,7 @@ const moveLeft = () => {
             if (matrix[i][k].number == number) {
                 steps++;;
                 sum = true;
-                forDelete = matrix[i][k].element;
+                matrix[i][k].element.remove();
             }
             if (matrix[i][k].element != undefined && matrix[i][k].number != number) {
                 break
@@ -240,8 +256,8 @@ const moveLeft = () => {
         }
     }
 
-    for (let i = 0; i < sizeX; i++){
-        for (let j = 0; j < sizeX; j++){
+    for (let j = 0; j < sizeX; j++){
+        for (let i = 0; i < sizeX; i++){
             if (matrix[i][j].element != undefined) {
                 move(i, j);
             }
@@ -252,7 +268,10 @@ const moveLeft = () => {
         addNew();
         if (forDelete) {
             forDelete.remove()
-        }}, speed * 1000)
+        }
+        console.log("after");
+        log_matrix();
+    }, speed * 1000)
 }
 
 const moveRight = () => {
