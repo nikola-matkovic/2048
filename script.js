@@ -19,7 +19,6 @@ const colors = [
 ];
 
 const GLOBAL_SPEEED = 250;
-
 let avableNumbers = [2, 4];
 let cont = document.getElementById("cont");
 let score = 0;
@@ -89,9 +88,18 @@ const setElementPosition = (element) => {
     matrix[top][left].element = element;
 }
 
+const createGrid = () => {
+    for (let i = 0; i < sizeX * sizeY; i++){
+        let cell = document.createElement("div");
+        cell.classList.add("cell");
+        cont.appendChild(cell);
+    }
+}
+
 const start = () => {
     score = 0;
     getHighScore();
+    createGrid();
     clear();
     addNew();
 }
