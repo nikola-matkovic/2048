@@ -323,7 +323,66 @@ const moveLeft = () => {
 }
 
 const moveRight = () => {
-    return;
+    console.log("before");
+    log_matrix();
+    let speed;
+    let forDelete = null;
+    const move = (i, j) => {
+        let steps = 0;
+        let sum = false;
+        let number = matrix[i][j].number;
+        let element = matrix[i][j].element;
+        for (let k = j - 1; k >= 0; k--) {
+            if (matrix[i][k].element == undefined) {
+                steps++;
+            }
+            if (matrix[i][k].number == number) {
+                steps++;;
+                sum = true;
+                matrix[i][k].element.remove();
+            }
+            if (matrix[i][k].element != undefined && matrix[i][k].number != number) {
+                break
+            }
+        }
+        if (steps) {
+            let lastPosition;
+            for (let k = 1; k <= steps; k++) {
+                matrix[i][j - k].element = element;
+                matrix[i][j - k].number = number;
+                matrix[i][j - k + 1].element = undefined;
+                matrix[i][j - k + 1].number = 0;
+                lastPosition = j - k;
+            }
+            if (sum) {
+                let element = matrix[i][lastPosition].element;
+                let colorIndex = Math.log2(number * 2);
+                let backgroundColor = colors[colorIndex];
+                element.textContent = number * 2;
+                element.style.backgroundColor = backgroundColor;
+                matrix[i][lastPosition].number = number * 2;
+                numberOfElements--;
+            }
+            speed = steps * 0.25;
+            element.style.transitionDuration = `${speed}s`
+            element.style.left = `${lastPosition * 25}%`;
+            console.log("I need to go " + steps + " steps")
+        }
+    }
+    for (let j = 0; j < sizeX; j++){
+        for (let i = 0; i < sizeX; i++){
+            if (matrix[i][j].element != undefined) {
+                move(i, j);
+            }
+        }
+    }
+
+    setTimeout(() => {
+        addNew();
+        console.log("after");
+        log_matrix();
+    }, speed * 1000)
+}
 }
 //event listeners:
 addEventListener("load", start)
