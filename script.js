@@ -100,7 +100,6 @@ const checkGameOver = () => {
 }
 
 const addNew = () => {
-    console.log(numberOfElements, "pre")
     let isOver = checkGameOver();
     if (isOver){
         gameOver();
@@ -109,7 +108,6 @@ const addNew = () => {
     let element = createNewElement();
     setElementPosition(element);
     numberOfElements++;
-    console.log(numberOfElements, "posle")
 }
 
 const detectKey = (event) =>{
@@ -117,91 +115,144 @@ const detectKey = (event) =>{
     switch (key) {
         case "ArrowUp":
             moveUp();
+            break;
         case "ArrowDown":
             moveDown();
+            break;
         case "ArrowLeft":
             moveLeft();
+            break;
         case "ArrowRight":
             moveRight();
     }
 }
 
 const moveUp = () => {
-    let speed = 0;
-    let forRemove = false;
-    const move = (object, j, i) => {
-        if (!canGoUp(j, i)) {
-            return;
+    let speed;
+    let forDelete = null;
+    const move = (i, j) => {
+        let steps = 0;
+        let sum = false;
+        number = matrix[i][j].number;
+        element = matrix[i][j].element; 
+        for (let k = i - 1; k >= 0; k--) {
+            if (matrix[k][j].element == undefined) {
+                steps++;
+            }
+            if (matrix[k][j].number == number) {
+                steps++;
+                sum = true;
+                forDelete = matrix[k][j].element;
+            }
+            if (matrix[k][j].element != undefined && matrix[k][j].number != number) {
+                break;
+            }
         }
-        let element = object.element;
-        let number = object.number;
-        let firstPosition = i;
-        let lastPosition;
-        let upperElement = i - 1
-        let currentElement = i;
-        while (matrix[upperElement][j].element == undefined || matrix[upperElement][j].number == number) {
-            matrix[upperElement][j].element = element;
-            matrix[upperElement][j].number = number;
-            matrix[currentElement][j].element = undefined;
-            matrix[currentElement][j].number = 0;
-            upperElement--;
-            currentElement--;
-            lastPosition = currentElement;
-            if(upperElement == -1) break
+        if (steps) {
+            let lastPosition;
+            for (let k = 1; k <= steps; k++){
+                matrix[i-k][j].element = element;
+                matrix[i-k][j].number = number;
+                matrix[i-k+1][j].element = undefined;
+                matrix[i - k + 1][j].number = 0;
+                lastPosition = i - k;
+            }
+            if (sum) {
+                let element = matrix[lastPosition][j].element;
+                let colorIndex = Math.log2(number * 2);
+                let backgroundColor = colors[colorIndex];
+                element.textContent = number * 2;
+                element.style.backgroundColor = backgroundColor;
+                matrix[lastPosition][j].number = number * 2;
+                numberOfElements--;
+            }
+            speed = steps * 0.25;
+            element.style.transitionDuration = `${speed}s`;
+            element.style.top = `${lastPosition * 25}%`;
+            element.style.top = `${lastPosition * 25}%`;
+            console.log("I need to go " + steps + " steps")
         }
-        console.log(firstPosition, lastPosition);
-        speed = (firstPosition - lastPosition) * 0.25;
-        element.style.transitionDuration = `${speed}s`;
-        element.style.top = `${lastPosition * 25}%`;
     }
-    for (let i = 0; i < sizeX; i++) {
-        for (let j = 0; j < sizeY; j++) {
-            if (matrix[i][j].element) {
-                move(matrix[i][j], j, i);
+
+    for (let i = 0; i < sizeY; i++){
+        for (let j = 0; j < sizeX; j++){
+            if (matrix[i][j].element != undefined) {
+                move(i, j)
             }
         }
     }
 
     setTimeout(() => {
-        if (forRemove) {
-            forRemove.remove()
-        }
         addNew();
+        if (forDelete) {
+            forDelete.remove();
+        }
     }, speed * 1000);
-
-}
-const canGoUp = (x, y) => {
-    const haveFreeUp = (y) => {
-        let uppFilds = [];
-        for (let i = 0; i < y; i++){
-            uppFilds.push(matrix[i][x]);
-        }
-        return uppFilds.some(fild => fild.element == undefined)
-    }
-    const haveSameUp = (y) => {
-        for (let i = y; i > 0; i--){
-            current = matrix[i][x];
-            prew = matrix[i - 1][x];
-            if (current.number == prew.number) {
-                return true;
-            }
-        }
-        return false;
-    }
-    if (y != 0 && haveFreeUp(y)  || y!=0 &&  haveSameUp(x, y)) {
-        return true;
-    }
-    else {
-        return false;
-    }
-
 }
 
 const moveDown = () => {
     return;
 }
+
 const moveLeft = () => {
-    return;
+    let speed;
+    let forDelete = null;
+    const move = (i, j) => {
+        let steps = 0;
+        let sum = false;
+        let number = matrix[i][j].number;
+        let element = matrix[i][j].element;
+        for (let k = j - 1; k >= 0; k--) {
+            if (matrix[i][k].element == undefined) {
+                steps++;
+            }
+            if (matrix[i][k].number == number) {
+                steps++;;
+                sum = true;
+                forDelete = matrix[i][k].element;
+            }
+            if (matrix[i][k].element != undefined && matrix[i][k].number != number) {
+                break
+            }
+        }
+        if (steps) {
+            let lastPosition;
+            for (let k = 1; k <= steps; k++) {
+                matrix[i][j - k].element = element;
+                matrix[i][j - k].number = number;
+                matrix[i][j - k + 1].element = undefined;
+                matrix[i][j - k + 1].number = 0;
+                lastPosition = j - k;
+            }
+            if (sum) {
+                let element = matrix[i][lastPosition].element;
+                let colorIndex = Math.log2(number * 2);
+                let backgroundColor = colors[colorIndex];
+                element.textContent = number * 2;
+                element.style.backgroundColor = backgroundColor;
+                matrix[i][lastPosition].number = number * 2;
+                numberOfElements--;
+            }
+            speed = steps * 0.25;
+            element.style.transitionDuration = `${speed}s`
+            element.style.left = `${lastPosition * 25}%`;
+            console.log("I need to go " + steps + " steps")
+        }
+    }
+
+    for (let i = 0; i < sizeX; i++){
+        for (let j = 0; j < sizeX; j++){
+            if (matrix[i][j].element != undefined) {
+                move(i, j);
+            }
+        }
+    }
+
+    setTimeout(() => {
+        addNew();
+        if (forDelete) {
+            forDelete.remove()
+        }}, speed * 1000)
 }
 
 const moveRight = () => {
