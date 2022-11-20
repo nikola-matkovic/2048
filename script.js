@@ -18,6 +18,8 @@ const colors = [
     "rgb(0, 0, 0)",
 ];
 
+const fontSizes = ["17vmin", "15vmin", "11vmin", "9vmin", "7vmin", "6vmin"]
+
 const GLOBAL_SPEEED = 250;
 let avableNumbers = [2, 4];
 let cont = document.getElementById("cont");
@@ -33,7 +35,6 @@ const log_matrix = () => {
         console.log(`${matrix[i][0].number} \t ${matrix[i][1].number} \t ${matrix[i][2].number} \t ${matrix[i][3].number}`);
     }
     let numberOfElements_real = document.querySelectorAll(".number").length
-    console.log(`now i have ${numberOfElements_real} elements, and i have ${numberOfElements} in memory`);
 }
 
 const getRandomNumber = (numbers) => {
@@ -64,14 +65,20 @@ const clearUsed = () => {
     }
 }
 
+const setFontSize = (element)=> {
+    let numberOfCharacters = element.textContent.toString().length;
+    element.style.fontSize = fontSizes[numberOfCharacters - 1]
+}
+
 const createNewElement = () => {
     let number = getRandomNumber(avableNumbers);
-    let colorIndex = Math.log2(number);
+    let colorIndex = Math.log2(number) - 1;
     let backgroundColor = colors[colorIndex];
     let element = document.createElement("div");
     element.classList.add("number");
     element.style.backgroundColor = backgroundColor;
     element.textContent = number;
+    setFontSize(element);
     cont.appendChild(element);
     return element;
 }
@@ -153,6 +160,13 @@ const detectKey = (event) => {
         case "ArrowRight":
             moveRight();
     }
+    updateScore();
+}
+
+const updateScore = () => {
+    let element = document.getElementById("score")
+    element.textContent = score;
+    setFontSize(element);
 }
 
 const moveUp = () => {
@@ -188,9 +202,11 @@ const moveUp = () => {
             }
             if (sum) {
                 let element = matrix[lastPosition][j].element;
-                let colorIndex = Math.log2(number * 2);
+                let colorIndex = Math.log2(number * 2) - 1;
                 let backgroundColor = colors[colorIndex];
                 element.textContent = number * 2;
+                score += number * 2;
+                setFontSize(element);
                 element.style.backgroundColor = backgroundColor;
                 matrix[lastPosition][j].number = number * 2;
                 numberOfElements--;
@@ -202,7 +218,6 @@ const moveUp = () => {
             element.style.transitionDuration = `${speed * GLOBAL_SPEEED}ms`
             element.style.top = `${lastPosition * 25}%`;
             element.style.top = `${lastPosition * 25}%`;
-            console.log("I need to go " + steps + " steps")
         }
     }
 
@@ -253,9 +268,11 @@ const moveDown = () => {
             }
             if (sum) {
                 let element = matrix[lastPosition][j].element;
-                let colorIndex = Math.log2(number * 2);
+                let colorIndex = Math.log2(number * 2) - 1;
                 let backgroundColor = colors[colorIndex];
                 element.textContent = number * 2;
+                score += number * 2;
+                setFontSize(element);
                 element.style.backgroundColor = backgroundColor;
                 matrix[lastPosition][j].number = number * 2;
                 numberOfElements--;
@@ -265,7 +282,6 @@ const moveDown = () => {
                 element.style.transitionDuration = `${speed * GLOBAL_SPEEED}ms`
                 element.style.top = `${lastPosition * 25}%`;
                 element.style.top = `${lastPosition * 25}%`;
-            console.log("I need to go " + steps + " steps")
         }
     }
 
@@ -318,9 +334,11 @@ const moveLeft = () => {
             }
             if (sum) {
                 let element = matrix[i][lastPosition].element;
-                let colorIndex = Math.log2(number * 2);
+                let colorIndex = Math.log2(number * 2) - 1;
                 let backgroundColor = colors[colorIndex];
                 element.textContent = number * 2;
+                score += number * 2;
+                setFontSize(element);
                 element.style.backgroundColor = backgroundColor;
                 matrix[i][lastPosition].number = number * 2;
                 numberOfElements--;
@@ -380,9 +398,11 @@ const moveRight = () => {
             }
             if (sum) {
                 let element = matrix[i][lastPosition].element;
-                let colorIndex = Math.log2(number * 2);
+                let colorIndex = Math.log2(number * 2) - 1;
                 let backgroundColor = colors[colorIndex];
                 element.textContent = number * 2;
+                score += number * 2;
+                setFontSize(element);
                 element.style.backgroundColor = backgroundColor;
                 matrix[i][lastPosition].number = number * 2;
                 numberOfElements--;

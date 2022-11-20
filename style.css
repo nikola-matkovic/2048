@@ -52,6 +52,7 @@ body {
 #cont > .cell {
     background-color: rgba(161, 132, 64, 0.4);
     border: 10px solid rgb(10, 10, 30);
+    overflow: hidden;
 }
 
 .number {
@@ -62,12 +63,19 @@ body {
     transform: translate(10px, 10px);
     aspect-ratio: 1;
     font-family: roboto, arial, helvetica, sans-serif;
-    font-size: 15vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: rgb(39, 39, 39);
+    color: rgb(33, 33, 33);
+    -webkit-text-stroke: 2px #bcbcbc;
     transition: all;
     transition-timing-function: linear;
-    transition-duration: 1s;
+}
+
+#score {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    font-family: Roboto, arial, helvetica, sans-serif;
 }
