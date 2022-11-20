@@ -51,7 +51,15 @@ const clear = () => {
     }
     for (let i = 0; i < sizeX; i++) {
         for (let j = 0; j < sizeY; j++) {
-            matrix[i][j] = {number: 0, element: undefined};
+            matrix[i][j] = { number: 0, element: undefined, used : false};
+        }
+    }
+}
+
+const clearUsed = () => {
+    for (let i = 0; i < sizeX; i++) {
+        for (let j = 0; j < sizeY; j++) {
+            matrix[i][j].used = false;
         }
     }
 }
@@ -127,7 +135,8 @@ const addNew = () => {
     numberOfElements++;
 }
 
-const detectKey = (event) =>{
+const detectKey = (event) => {
+    clearUsed();
     let key = event.key;
     switch (key) {
         case "ArrowUp":
@@ -147,9 +156,7 @@ const detectKey = (event) =>{
 const moveUp = () => {
     console.log("before");
     log_matrix();
-
     let speed;
-    let forDelete = null;
     const move = (i, j) => {
         let steps = 0;
         let sum = false;
@@ -185,6 +192,9 @@ const moveUp = () => {
                 element.style.backgroundColor = backgroundColor;
                 matrix[lastPosition][j].number = number * 2;
                 numberOfElements--;
+
+                //fix bug for  3 in row
+                matrix[lastPosition][j].used = true;
             }
             speed = steps * 0.25;
             element.style.transitionDuration = `${speed * GLOBAL_SPEEED}ms`
