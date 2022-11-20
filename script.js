@@ -110,6 +110,8 @@ const start = () => {
     createGrid();
     clear();
     addNew();
+    addNew();
+    addNew();
 }
 
 const gameOver = () => {
@@ -166,7 +168,7 @@ const moveUp = () => {
             if (matrix[k][j].element == undefined) {
                 steps++;
             }
-            if (matrix[k][j].number == number) {
+            if (matrix[k][j].number == number && matrix[k][j].used === false) {
                 steps++;
                 sum = true;
                 matrix[k][j].element.remove();
@@ -231,7 +233,7 @@ const moveDown = () => {
             if (matrix[k][j].element == undefined) {
                 steps++;
             }
-            if (matrix[k][j].number == number) {
+            if (matrix[k][j].number == number  && matrix[k][j].used === false) {
                 steps++;
                 sum = true;
                 matrix[k][j].element.remove();
@@ -257,6 +259,7 @@ const moveDown = () => {
                 element.style.backgroundColor = backgroundColor;
                 matrix[lastPosition][j].number = number * 2;
                 numberOfElements--;
+                matrix[lastPosition][j].used = true;
             }
                 speed = steps * 0.25;
                 element.style.transitionDuration = `${speed * GLOBAL_SPEEED}ms`
@@ -295,7 +298,7 @@ const moveLeft = () => {
             if (matrix[i][k].element == undefined) {
                 steps++;
             }
-            if (matrix[i][k].number == number) {
+            if (matrix[i][k].number == number  && matrix[k][j].used === false) {
                 steps++;;
                 sum = true;
                 matrix[i][k].element.remove();
@@ -321,6 +324,7 @@ const moveLeft = () => {
                 element.style.backgroundColor = backgroundColor;
                 matrix[i][lastPosition].number = number * 2;
                 numberOfElements--;
+                matrix[lastPosition][j].used = true;
             }
             speed = steps * 0.25;
             element.style.transitionDuration = `${speed * GLOBAL_SPEEED}ms`
@@ -356,7 +360,7 @@ const moveRight = () => {
             if (matrix[i][k].element == undefined) {
                 steps++;
             }
-            if (matrix[i][k].number == number) {
+            if (matrix[i][k].number == number  && matrix[k][j].used === false) {
                 steps++;;
                 sum = true;
                 matrix[i][k].element.remove();
@@ -382,6 +386,7 @@ const moveRight = () => {
                 element.style.backgroundColor = backgroundColor;
                 matrix[i][lastPosition].number = number * 2;
                 numberOfElements--;
+                matrix[lastPosition][j].used = true;
             }
             speed = steps * 0.25;
             element.style.transitionDuration = `${speed * GLOBAL_SPEEED}ms`
