@@ -1,5 +1,3 @@
-style all elements
-
 add random responing for element
 
 add element moving 
@@ -15,3 +13,5 @@ set hightscore in local storage
 add check for avable positions  at check game over
 
 fix adding elements if no one can go up
+
+style text size
