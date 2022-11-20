@@ -6,7 +6,7 @@ add stacking logic
 
 add settings and maybe sounds
 
-add score and hightscore
+add hightscore
 
 set hightscore in local storage
 

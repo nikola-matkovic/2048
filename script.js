@@ -220,7 +220,6 @@ const moveUp = () => {
             element.style.top = `${lastPosition * 25}%`;
         }
     }
-
     for (let i = 0; i < sizeY; i++){
         for (let j = 0; j < sizeX; j++){
             if (matrix[i][j].element != undefined) {
