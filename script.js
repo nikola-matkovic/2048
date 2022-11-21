@@ -143,7 +143,7 @@ const addNew = () => {
     numberOfElements++;
 }
 
-const detectKey = (event) => {
+const prepareMove = (event) => {
     clearUsed();
     let key = event.key;
     switch (key) {
@@ -430,4 +430,4 @@ const moveRight = () => {
 }
 //event listeners:
 addEventListener("load", start)
-addEventListener("keyup", (event) => detectKey(event))
+addEventListener("keyup", (event) => prepareMove(event))
