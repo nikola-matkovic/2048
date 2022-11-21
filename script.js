@@ -20,7 +20,7 @@ const colors = [
 
 const fontSizes = ["17vmin", "15vmin", "11vmin", "9vmin", "7vmin", "6vmin"]
 
-const GLOBAL_SPEEED = 250;
+const GLOBAL_SPEEED = 100;
 let avableNumbers = [2, 4];
 let cont = document.getElementById("cont");
 let score = 0;
@@ -35,6 +35,11 @@ const log_matrix = () => {
         console.log(`${matrix[i][0].number} \t ${matrix[i][1].number} \t ${matrix[i][2].number} \t ${matrix[i][3].number}`);
     }
     let numberOfElements_real = document.querySelectorAll(".number").length
+}
+
+const setFontSize = (element)=> {
+    let numberOfCharacters = element.textContent.toString().length;
+    element.style.fontSize = fontSizes[numberOfCharacters - 1]
 }
 
 const getRandomNumber = (numbers) => {
@@ -65,10 +70,6 @@ const clearUsed = () => {
     }
 }
 
-const setFontSize = (element)=> {
-    let numberOfCharacters = element.textContent.toString().length;
-    element.style.fontSize = fontSizes[numberOfCharacters - 1]
-}
 
 const createNewElement = () => {
     let number = getRandomNumber(avableNumbers);
@@ -116,8 +117,6 @@ const start = () => {
     getHighScore();
     createGrid();
     clear();
-    addNew();
-    addNew();
     addNew();
 }
 
@@ -169,10 +168,26 @@ const updateScore = () => {
     setFontSize(element);
 }
 
+const connect = (lastPosition, j)  => {
+    let element = matrix[lastPosition][j].element;
+    let colorIndex = Math.log2(number * 2) - 1;
+    let backgroundColor = colors[colorIndex];
+    element.textContent = number * 2;
+    score += number * 2;
+    setFontSize(element);
+    element.style.backgroundColor = backgroundColor;
+    matrix[lastPosition][j].number = number * 2;
+    numberOfElements--;
+    matrix[lastPosition][j].used = true;
+}
+
+const animateMove = (steps, direction, lastPosition) => {
+    speed = steps * 0.25;
+    element.style.transitionDuration = `${speed * GLOBAL_SPEEED}ms`
+    element.style[direction] = `${lastPosition * 25}%`;
+}
+
 const moveUp = () => {
-    console.log("before");
-    log_matrix();
-    let speed;
     const move = (i, j) => {
         let steps = 0;
         let sum = false;
@@ -201,23 +216,9 @@ const moveUp = () => {
                 lastPosition = i - k;
             }
             if (sum) {
-                let element = matrix[lastPosition][j].element;
-                let colorIndex = Math.log2(number * 2) - 1;
-                let backgroundColor = colors[colorIndex];
-                element.textContent = number * 2;
-                score += number * 2;
-                setFontSize(element);
-                element.style.backgroundColor = backgroundColor;
-                matrix[lastPosition][j].number = number * 2;
-                numberOfElements--;
-
-                //fix bug for  3 in row
-                matrix[lastPosition][j].used = true;
+                connect(lastPosition, j)
             }
-            speed = steps * 0.25;
-            element.style.transitionDuration = `${speed * GLOBAL_SPEEED}ms`
-            element.style.top = `${lastPosition * 25}%`;
-            element.style.top = `${lastPosition * 25}%`;
+            animateMove(steps, "top", lastPosition);
         }
     }
     for (let i = 0; i < sizeY; i++){
